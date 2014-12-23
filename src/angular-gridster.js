@@ -915,7 +915,7 @@ var refresh = function() {
 				}
 
 				var dragTimeout,
-					dragTimeOut = 350;
+					dragTimeOut = 300;
 
 				function drag(event) {
 					if (!dragTimeout) {
