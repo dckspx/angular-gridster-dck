@@ -537,7 +537,9 @@ var refresh = function() {
 
                             if (typeof gridster.rowHeight === 'string') {
                                 if (gridster.rowHeight === 'match') {
-                                    gridster.curRowHeight = gridster.curColWidth;
+									// #hardcoded width in pixels, for testing
+									gridster.curRowHeight = 20;
+                                    // gridster.curRowHeight = gridster.curColWidth;
                                 } else if (gridster.rowHeight.indexOf('*') !== -1) {
                                     gridster.curRowHeight = gridster.curColWidth * gridster.rowHeight.replace('*', '').replace(' ', '');
                                 } else if (gridster.rowHeight.indexOf('/') !== -1) {
@@ -912,7 +914,21 @@ var refresh = function() {
 					});
 				}
 
+				var dragTimeout,
+					dragTimeOut = 350;
+
 				function drag(event) {
+					if (!test) {
+						dragTimeout = setTimeout(function () {
+							dragInternal(event);
+						}, dragTimeOut);
+					} else {
+						clearTimeout(dragTimeout);
+						dragTimeout = false;
+					}
+				}
+
+				function dragInternal(event) {
 					var oldRow = item.row,
 						oldCol = item.col,
 						hasCallback = gridster.draggable && gridster.draggable.drag,
@@ -961,6 +977,8 @@ var refresh = function() {
 				}
 
 				function dragStop(event) {
+					dragInternal(event);
+
 					$el.removeClass('gridster-item-moving');
 					var row = gridster.pixelsToRows(elmY);
 					var col = gridster.pixelsToColumns(elmX);
